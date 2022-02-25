@@ -15,7 +15,7 @@ from pybricks.iodevices import Ev3devSensor
 
 # Create your objects here.
 ev3 = EV3Brick()
-compass = Ev3devSensor(Port.S1)
+compass = Ev3devSensor(Port.S4)
 ev3.speaker.beep()
 lm = Motor(Port.B)
 rm = Motor(Port.C)
