@@ -15,17 +15,31 @@ from pybricks.iodevices import Ev3devSensor
 
 # Create your objects here.
 ev3 = EV3Brick()
-compass = Ev3devSensor(Port.S4)
+compass = Ev3devSensor(Port.S2)
 ev3.speaker.beep()
 lm = Motor(Port.B)
 rm = Motor(Port.C)
+seeker = Ev3devSensor(Port.S3)
 
 # Write your program here.
 ev3.screen.clear()
-k = 1
+kc = 1
+ks = 20
 v = 50
 e = 0
 alpha = 0
+
+while True:
+    seeker_result = seeker.read('AC-ALL')
+    dir = seeker_result[0]
+    ev3.screen.print(dir)
+    u = (dir - 5) * ks
+    ev3.screen.print(u)
+    lm.dc(v + u)
+    rm.dc(v - u)
+    wait(10)
+
+"""
 while True:
     if e == 100:
         alpha = (alpha + 90) % 360
@@ -44,4 +58,4 @@ while True:
     rm.dc(v - u)
     wait(10)
     e+=1
-    
+"""
