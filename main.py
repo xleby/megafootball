@@ -16,28 +16,47 @@ from pybricks.iodevices import Ev3devSensor
 # Create your objects here.
 ev3 = EV3Brick()
 compass = Ev3devSensor(Port.S2)
-ev3.speaker.beep()
+seeker = Ev3devSensor(Port.S3)
 lm = Motor(Port.B)
 rm = Motor(Port.C)
-seeker = Ev3devSensor(Port.S3)
 
+ev3.speaker.beep()
 # Write your program here.
 ev3.screen.clear()
 kc = 1
 ks = 20
 v = 50
 e = 0
-alpha = 0
+
+
+
+alpha = compass.read('COMPASS')[0]
 
 while True:
     seeker_result = seeker.read('AC-ALL')
     dir = seeker_result[0]
-    ev3.screen.print(dir)
-    u = (dir - 5) * ks
+    see = seeker_result[1] + seeker_result[2] + seeker_result[3] + seeker_result[4] + seeker_result[5]
+
+    angle = compass.read('COMPASS')[0]
+    err = alpha - angle
+    er = err / 180
+    if er > 0:
+        er = math.floor(er)
+    else:
+        er = math.ceil(er)
+    ucom = err - er * 360
+
+    if see > 100:
+        u = ucom
+    else:
+        u = (dir - 5) * ks
+    
     ev3.screen.print(u)
     lm.dc(v + u)
     rm.dc(v - u)
     wait(10)
+
+
 
 """
 while True:
